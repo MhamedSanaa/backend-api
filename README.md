@@ -1,4 +1,9 @@
 # "Express JS Tutorial - JWT Protected Routes"
+**inport:**
+run the command : npm run dev
+to launch the server
+dont forget to setup the Db configuration in .env file 
+
 
 ✅ [Check out my YouTube Channel with all of my tutorials](https://www.youtube.com/DaveGrayTeachesCode).
 
