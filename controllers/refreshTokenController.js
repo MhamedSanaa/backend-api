@@ -14,12 +14,12 @@ const handleRefreshToken = async (req, res) => {
         process.env.REFRESH_TOKEN_SECRET,
         (err, decoded) => {
             if (err || foundUser.username !== decoded.username) return res.sendStatus(403);
-            const roles = Object.values(foundUser.roles)
+            const admin = foundUser.admin
             const accessToken = jwt.sign(
                 { 
                     "UserInfo":{
                         "username": foundUser.username,
-                        "roles": roles
+                        "admin": admin
                     }
                 },
                 process.env.ACCESS_TOKEN_SECRET,
