@@ -14,18 +14,18 @@ const handleRefreshToken = async (req, res) => {
         process.env.REFRESH_TOKEN_SECRET,
         (err, decoded) => {
             if (err || foundUser.username !== decoded.username) return res.sendStatus(403);
-            const admin = foundUser.admin
+            const admin = foundUser.admin;
             const accessToken = jwt.sign(
-                { 
-                    "UserInfo":{
-                        "username": foundUser.username,
+                {
+                    "UserInfo": {
+                        "username": decoded.username,
                         "admin": admin
                     }
                 },
                 process.env.ACCESS_TOKEN_SECRET,
-                { expiresIn: '30s' }
+                { expiresIn: '10s' }
             );
-            res.json({ accessToken })
+            res.json({ admin, accessToken })
         }
     );
 }

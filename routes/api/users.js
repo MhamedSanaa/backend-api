@@ -1,16 +1,14 @@
-/*const express = require('express');
+const express = require('express');
 const router = express.Router();
-const employeesController = require('../../controllers/employeesController');
-const ROLES_LIST  = require('../../config/roles_liste')
-const verifyRoles = require('../../middleware/verifyRoles')
+const UsersController = require('../../controllers/usersController');
+/* const ROLES_LIST  = require('../../config/roles_liste')
+const verifyRoles = require('../../middleware/verifyRoles') */
 
 router.route('/')
-    .get(employeesController.getAllEmployees)
-    .post(verifyRoles(ROLES_LIST.Admin),employeesController.createNewEmployee)
-    .put(verifyRoles(ROLES_LIST.Validator,ROLES_LIST.Annotator),employeesController.updateEmployee)
-    .delete(verifyRoles(ROLES_LIST.Admin),employeesController.deleteEmployee);
+    .get(UsersController.getAllUsers)
+    .delete(UsersController.deleteUser);
 
 router.route('/:id')
-    .get(employeesController.getEmployee);
+    .get(UsersController.getUser);
 
-module.exports = router;*/
+module.exports = router;

@@ -2,22 +2,22 @@ const User = require('../model/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-
 const handleLogin = async (req, res) => {
     const { user, pwd } = req.body;
     if (!user || !pwd) return res.status(400).json({ 'message': 'Username and password are required.' });
+
     const foundUser = await User.findOne({ username: user }).exec();
     if (!foundUser) return res.sendStatus(401); //Unauthorized 
     // evaluate password 
     const match = await bcrypt.compare(pwd, foundUser.password);
     if (match) {
-        const admin = foundUser.admin
+        const admin = foundUser.admin;
         // create JWTs
         const accessToken = jwt.sign(
             {
                 "UserInfo": {
                     "username": foundUser.username,
-                    "Admin": admin
+                    "admin": admin
                 }
             },
             process.env.ACCESS_TOKEN_SECRET,
@@ -30,11 +30,14 @@ const handleLogin = async (req, res) => {
         );
         // Saving refreshToken with current user
         foundUser.refreshToken = refreshToken;
-        const result = foundUser.save();
+        const result = await foundUser.save();
         console.log(result);
-
-        res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', /*secure: true,*/ maxAge: 24 * 60 * 60 * 1000 });
+        console.log(admin);
+        // Creates Secure Cookie with refresh token
+        res.cookie('jwt', refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });
+        // Send authorization roles and access token to user
         res.json({ admin, accessToken });
+
     } else {
         res.sendStatus(401);
     }
