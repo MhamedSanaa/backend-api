@@ -367,3 +367,5 @@
 20220808	16:39:58	695e0a78-e550-461e-85d5-44e293891847	POST	http://localhost:3000	/auth
 20220808	16:40:15	6b8046f5-0bfd-4946-b428-3c4a61bff178	OPTIONS	http://localhost:3000	/auth
 20220808	16:40:15	95b3950d-2d02-44c7-a8b3-64844bb40a80	POST	http://localhost:3000	/auth
+20220808	17:04:05	45a82b9e-20bf-43dc-906a-6d8602c4b2c4	OPTIONS	http://localhost:3000	/auth
+20220808	17:04:05	5cb7f7f7-67ea-4e42-b17f-1652eb66745b	POST	http://localhost:3000	/auth
