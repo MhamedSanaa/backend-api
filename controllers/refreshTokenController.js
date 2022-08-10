@@ -3,11 +3,12 @@ const jwt = require('jsonwebtoken');
 
 const handleRefreshToken = async (req, res) => {
     const cookies = req.cookies;
-    if (!cookies?.jwt) return res.sendStatus(401);
+    if (!cookies?.jwt) return res.sendStatus(401); // unauthorized this mean there is no cookie with jwt token
     const refreshToken = cookies.jwt;
-
+    
     const foundUser = await User.findOne({ refreshToken }).exec();
-    if (!foundUser) return res.sendStatus(403); //Forbidden 
+    if (!foundUser) return res.sendStatus(403)//Forbidden this means therse no user because the cookie is empty
+
     // evaluate jwt 
     jwt.verify(
         refreshToken,

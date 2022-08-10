@@ -21,12 +21,12 @@ const handleLogin = async (req, res) => {
                 }
             },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '30s' }
+            { expiresIn: '10s' }
         );
         const refreshToken = jwt.sign(
             { "username": foundUser.username },
             process.env.REFRESH_TOKEN_SECRET,
-            { expiresIn: '1d' }
+            { expiresIn: '5m' }// when times is up you are forbidden
         );
         // Saving refreshToken with current user
         foundUser.refreshToken = refreshToken;
@@ -34,7 +34,7 @@ const handleLogin = async (req, res) => {
         console.log(result);
         console.log(admin);
         // Creates Secure Cookie with refresh token
-        res.cookie('jwt', refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });
+        res.cookie('jwt', refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 5 * 60 * 1000 });//when times up unauthorized
         // Send authorization roles and access token to user
         res.json({ admin, accessToken });
 
