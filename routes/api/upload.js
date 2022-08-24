@@ -1,9 +1,12 @@
-const express = require('express');
+const upload = require("../../middleware/upload");
+const express = require("express");
 const router = express.Router();
-const uploadsController = require('../../controllers/uploadsController');
-const fileUpload = require('express');
+const UploadsController = require('../../controllers/uploadsController');
 
-router.route('/')
-    .post(fileUpload({createParentPath: true}),uploadsController.uploadFiles);
+router.post("/upload", upload.array("file",10),UploadsController.uploadFiles);
+
+router.get("/:filename",UploadsController.getFile);
+
+router.delete("/:filename", UploadsController.deleteFile);
 
 module.exports = router;

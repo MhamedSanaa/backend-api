@@ -11,10 +11,23 @@ const cookieParser = require('cookie-parser');
 const credentials = require('./middleware/credentials');
 const mongoose = require('mongoose');
 const connectDB = require('./config/dbConnection');
+
+
+// const upload = require("./routes/upload");
+const Grid = require("gridfs-stream");
+
+
 const PORT = process.env.PORT || 3500;
 
 // Connect to MongoDB
 connectDB();
+let gfs;
+
+const conn = mongoose.connection;
+conn.once("open", function () {
+    gfs = Grid(conn.db, mongoose.mongo);
+    gfs.collection("Audio");
+});
 
 //middleware for cookies
 app.use(cookieParser());
@@ -30,6 +43,8 @@ app.use(credentials);
 app.use(cors(corsOptions));
 
 // built-in middleware to handle urlencoded form data
+app.use(express.json({limit: '25mb'}));
+app.use(express.urlencoded({limit: '25mb'}));
 app.use(express.urlencoded({ extended: false }));
 
 // built-in middleware for json 
@@ -46,10 +61,12 @@ app.use('/auth', require('./routes/auth'));
 app.use('/refresh', require('./routes/refresh'));
 app.use('/logout', require('./routes/logout'));
 
+app.use("/file", require('./routes/api/upload')); // to be moved under JWT for verification
+
 app.use(verifyJWT);
 app.use('/employees', require('./routes/api/employees'));
 app.use('/users', require('./routes/api/users'));
-app.use('/upload',require('./routes/api/upload'))
+// app.use('/upload',require('./routes/api/upload'))
 
 app.all('*', (req, res) => {
     res.status(404);
@@ -61,6 +78,11 @@ app.all('*', (req, res) => {
         res.type('txt').send("404 Not Found");
     }
 });
+
+
+
+// media routes
+
 
 app.use(errorHandler);
 
