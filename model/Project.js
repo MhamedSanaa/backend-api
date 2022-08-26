@@ -6,9 +6,17 @@ const projectSchema = new Schema({
         type : String,
         required : true,
     },
+    type:{
+        type : String,
+        required : true,
+    },
     files:{
         type : String,
         required : true,
-    }
+    },
+    collabs:[{
+        username : String
+    }]
+
 })
 module.exports = mongoose.model('Project',projectSchema)
