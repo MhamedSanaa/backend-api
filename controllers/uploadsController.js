@@ -16,6 +16,16 @@ const getFile =  async (req, res) => {
     }
 }
 
+const getAllFiles =  async (req, res) => {
+    try {
+        const files = await gfs.files.find();
+        const readStream = gfs.createReadStream(files.filename);
+        readStream.pipe(res);
+    } catch (error) {
+        res.send("not found");
+    }
+}
+
 const deleteFile = async (req, res) => {
     try {
         await gfs.files.deleteOne({ filename: req.params.filename });
@@ -29,5 +39,6 @@ const deleteFile = async (req, res) => {
 module.exports = {
     uploadFiles,
     getFile,
+    getAllFiles,
     deleteFile
 }

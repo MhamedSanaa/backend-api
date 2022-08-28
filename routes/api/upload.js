@@ -7,6 +7,8 @@ router.post("/upload", upload.array("file",10),UploadsController.uploadFiles);
 
 router.get("/:filename",UploadsController.getFile);
 
+router.get("/getFiles",UploadsController.getAllFiles);
+
 router.delete("/:filename", UploadsController.deleteFile);
 
 module.exports = router;
