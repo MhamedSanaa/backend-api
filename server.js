@@ -62,6 +62,7 @@ app.use('/refresh', require('./routes/refresh'));
 app.use('/logout', require('./routes/logout'));
 
 app.use("/file", require('./routes/api/upload')); // to be moved under JWT for verification
+app.use("/project", require('./routes/api/project'));
 
 app.use(verifyJWT);
 app.use('/employees', require('./routes/api/employees'));

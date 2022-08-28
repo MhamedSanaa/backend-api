@@ -25,14 +25,38 @@ const getProject = async (req, res) => {
     res.json(project);
 }
 
+const handleNewProject = async (req, res)=>{
+
+    const data=req.body;
+    // console.log('req', req);
+    // console.log('req body : ',req.body);
+
+    try{
+     const project = await Project.create({
+        owner:'changeMe',
+        title:data.projectTitle,
+        type:data.projectType,
+        files:data.projectFiles,
+        collabs:data.projectUsers,
+     })
+    //  console.log(project);
+     return project
+    }
+    catch(err){
+        console.log(err);
+        return undefined;
+    }
+}
+
 module.exports = {
+    handleNewProject,
     getAllProjects,
     deleteProject,
     getProject
 }
 
-module.exports = {
-    getAllProjects,
-    deleteProject,
-    getProject
-}
+// module.exports = {
+//     getAllProjects,
+//     deleteProject,
+//     getProject
+// }
