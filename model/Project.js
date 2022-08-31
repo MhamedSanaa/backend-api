@@ -19,9 +19,8 @@ const projectSchema = new Schema({
         contentType : String,
     }],
     collabs:[{
-        type: Schema.Types.ObjectId, 
-        ref: 'User'
-    }]
+        user : {type: Schema.Types.ObjectId, ref: 'User'},
+        role: String}]
    
 
 })

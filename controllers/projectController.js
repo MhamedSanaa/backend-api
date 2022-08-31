@@ -29,22 +29,13 @@ const getProject = async (req, res) => {
 
 const addUserToProject = async(projectId,userId,userRole) =>{
     
-    console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
-    // console.log('user ',user);
-    console.log('projectId',projectId);
-    console.log('userId',userId);
-
-    const obj={
-        collabs : userId,
-        role:'userRole'
-    }
-
+   
     return Project.findByIdAndUpdate(
         projectId,
-        {$push : {collabs : userId}},
+        // {$push : {collabs : userId}},
         
         // {$push : {collabs : userId,role:'userRole'}},
-        // {$push : {collabs : {user : userId},role : role}},
+        {$push : {collabs : {user : userId,role : userRole}}},
         {new : true, useFindAndModify: false}
     )
 
