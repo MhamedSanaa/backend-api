@@ -76,7 +76,8 @@ const handleNewProject = async (req, res)=>{
         addProjectToUser(project.id,user.id);
     
     });
-   
+    addUserToProject(project.id,data.owner);
+    addProjectToUser(project.id,data.owner);
     //  console.log('project id : ',project.id);
 
     // addUserToProject(project.id,)
