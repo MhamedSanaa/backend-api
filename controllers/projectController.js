@@ -29,22 +29,26 @@ const getProject = async (req, res) => {
 
 const addUserToProject = async(projectId,userId,userRole) =>{
     
-    console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
-    // console.log('user ',user);
-    console.log('projectId',projectId);
-    console.log('userId',userId);
-
-    const obj={
-        collabs : userId,
-        role:'userRole'
-    }
-
+   
     return Project.findByIdAndUpdate(
         projectId,
-        {$push : {collabs : userId}},
+        // {$push : {collabs : userId}},
         
         // {$push : {collabs : userId,role:'userRole'}},
-        // {$push : {collabs : {user : userId},role : role}},
+        {$push : {collabs : {user : userId,role : userRole}}},
+        {new : true, useFindAndModify: false}
+    )
+
+}
+const addProjectToUser = async(projectId,userId) =>{
+    
+   
+    return User.findByIdAndUpdate(
+        userId,
+        // {$push : {collabs : userId}},
+        
+        // {$push : {collabs : userId,role:'userRole'}},
+        {$push : {projects :  projectId}},
         {new : true, useFindAndModify: false}
     )
 
@@ -67,7 +71,11 @@ const handleNewProject = async (req, res)=>{
         // collabs:data.collabs,
      })
 
-     data.collabs.map((user)=> { addUserToProject(project.id,user.id,user.role)});
+     data.collabs.map((user)=> { 
+        addUserToProject(project.id,user.id,user.role);
+        addProjectToUser(project.id,user.id);
+    
+    });
    
     //  console.log('project id : ',project.id);
 
