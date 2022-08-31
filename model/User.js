@@ -23,6 +23,10 @@ const userSchema = new Schema({
         type: String,
         // required: true
     },
+    projects: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Project"        
+    }],
     refreshToken: String
 });
 module.exports = mongoose.model('User', userSchema)

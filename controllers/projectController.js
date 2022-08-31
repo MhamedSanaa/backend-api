@@ -1,4 +1,5 @@
-const Project = require('../model/Project')
+const Project = require('../model/Project');
+const User = require('../model/User');
 
 const getAllProjects = async (req, res) => {
     const projects = await Project.find({});
@@ -25,21 +26,62 @@ const getProject = async (req, res) => {
     res.json(project);
 }
 
+
+const addUserToProject = async(projectId,userId,userRole) =>{
+    
+    console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+    // console.log('user ',user);
+    console.log('projectId',projectId);
+    console.log('userId',userId);
+
+    const obj={
+        collabs : userId,
+        role:'userRole'
+    }
+
+    return Project.findByIdAndUpdate(
+        projectId,
+        
+        // {$push : {collabs : userId,role:'userRole'}},
+        // {$push : {collabs : {user : userId},role : role}},
+        {new : true, useFindAndModify: false}
+    )
+
+}
+
 const handleNewProject = async (req, res)=>{
 
     const data=req.body;
+    console.log('hereeeeee');
+    console.log(data);
     // console.log('req', req);
     // console.log('req body : ',req.body);
 
     try{
      const project = await Project.create({
-        owner:'changeMe',
-        title:data.projectTitle,
-        type:data.projectType,
-        files:data.projectFiles,
-        collabs:data.projectUsers,
+        owner:data.owner,
+        title:data.title,
+        type:data.type,
+        files:data.files,
+        // collabs:data.collabs,
      })
-    //  console.log(project);
+
+     data.collabs.map((user)=> { addUserToProject(project.id,user.id,user.role)});
+   
+    //  console.log('project id : ',project.id);
+
+    // addUserToProject(project.id,)
+
+        // const project = new Project();
+        // project.owner=req.body.owner;
+        // project.title=req.body.title;
+        // project.type=req.body.type;
+        // project.files=req.body.files;
+        // project.collabs=req.body.collabs;
+
+        // console.log(project);
+
+        
      return project
     }
     catch(err){

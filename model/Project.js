@@ -19,9 +19,9 @@ const projectSchema = new Schema({
         contentType : String,
     }],
     collabs:[{
-        user : String,
-        role: String
-    }]
+        user : {type: Schema.Types.ObjectId, ref: 'User'},
+        role: String}]
+   
 
 })
 module.exports = mongoose.model('Project',projectSchema)
