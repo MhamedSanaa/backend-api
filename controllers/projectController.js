@@ -41,6 +41,7 @@ const addUserToProject = async(projectId,userId,userRole) =>{
 
     return Project.findByIdAndUpdate(
         projectId,
+        {$push : {collabs : userId}},
         
         // {$push : {collabs : userId,role:'userRole'}},
         // {$push : {collabs : {user : userId},role : role}},
