@@ -7,7 +7,7 @@ const verifyRoles = require('../../middleware/verifyRoles') */
 router.route('/')
     .get(ProjectController.getAllProjects)
     .delete(ProjectController.deleteProject)
-    .post(ProjectController.handleNewProject);
+    .post(ProjectController.handleNewProject)
 
 router.route('/:id')
     .get(ProjectController.getProject);
