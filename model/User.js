@@ -11,6 +11,10 @@ const userSchema = new Schema({
         required: true,
         default: true
     },
+    supervisor: {
+        type: Boolean,
+        default: false
+    },
     password: {
         type: String,
         required: true

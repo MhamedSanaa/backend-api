@@ -11,6 +11,7 @@ const handleLogin = async (req, res) => {
     // evaluate password 
     const match = await bcrypt.compare(pwd, foundUser.password);
     if (match) {
+        const supervisor = foundUser.supervisor;
         const admin = foundUser.admin;
         const userId = foundUser._id;
         // create JWTs
@@ -43,7 +44,7 @@ const handleLogin = async (req, res) => {
             sameSite: 'None', maxAge: 24 * 60 * 60 * 1000
         });//when times up unauthorized
         // Send authorization roles and access token to user
-        res.json({ userId, admin, accessToken });
+        res.json({ userId, admin, supervisor, accessToken });
 
     } else {
         res.sendStatus(401);
