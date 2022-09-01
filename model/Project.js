@@ -2,6 +2,7 @@ const mongoose  = require('mongoose');
 const Schema = mongoose.Schema;
 
 const projectSchema = new Schema({
+    // verify if owner have a special role
     owner:{
         type:String
     },
@@ -17,6 +18,12 @@ const projectSchema = new Schema({
         name : String,
         path : String,
         contentType : String,
+        annotatedBy : {type: Schema.Types.ObjectId, ref: 'User'},
+        completed :{
+            type : String,
+            default : '-'
+        }
+        // valida
     }],
     collabs:[{
         user : {type: Schema.Types.ObjectId, ref: 'User'},

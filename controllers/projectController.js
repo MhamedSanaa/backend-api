@@ -1,4 +1,5 @@
 const Project = require('../model/Project');
+const { listenerCount } = require('../model/User');
 const User = require('../model/User');
 
 const getAllProjects = async (req, res) => {
@@ -45,9 +46,6 @@ const addProjectToUser = async(projectId,userId) =>{
    
     return User.findByIdAndUpdate(
         userId,
-        // {$push : {collabs : userId}},
-        
-        // {$push : {collabs : userId,role:'userRole'}},
         {$push : {projects :  projectId}},
         {new : true, useFindAndModify: false}
     )
@@ -58,11 +56,11 @@ const handleNewProject = async (req, res)=>{
 
     const data=req.body;
     console.log('hereeeeee');
-    console.log(data);
-    // console.log('req', req);
-    // console.log('req body : ',req.body);
+    console.log('data',data);
+ 
 
     try{
+
      const project = await Project.create({
         owner:data.owner,
         title:data.title,
@@ -76,19 +74,8 @@ const handleNewProject = async (req, res)=>{
         addProjectToUser(project.id,user.id);
     
     });
-   
-    //  console.log('project id : ',project.id);
-
-    // addUserToProject(project.id,)
-
-        // const project = new Project();
-        // project.owner=req.body.owner;
-        // project.title=req.body.title;
-        // project.type=req.body.type;
-        // project.files=req.body.files;
-        // project.collabs=req.body.collabs;
-
-        // console.log(project);
+    addUserToProject(project.id,data.owner);
+    addProjectToUser(project.id,data.owner);
 
         
      return project
@@ -106,8 +93,3 @@ module.exports = {
     getProject
 }
 
-// module.exports = {
-//     getAllProjects,
-//     deleteProject,
-//     getProject
-// }
