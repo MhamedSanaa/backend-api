@@ -6,6 +6,13 @@ const getAllUsers = async (req, res) => {
     res.json(users);
 }
 
+const getUserProjects = async (req, res) => {
+    const userPopulated = await User.findById(req?.params?.id).populate("projects");
+    if (!userPopulated) return res.status(204).json({ 'message': 'no platform projects found' });
+    res.json(userPopulated.projects);
+    console.log(userPopulated.projects);
+}
+
 const deleteUser = async (req, res) => {
     if (!req?.body?.id) return res.status(400).json({ "message": 'User ID required' });
     const user = await User.findOne({ _id: req.body.id }).exec();
@@ -28,11 +35,6 @@ const getUser = async (req, res) => {
 module.exports = {
     getAllUsers,
     deleteUser,
-    getUser
-}
-
-module.exports = {
-    getAllUsers,
-    deleteUser,
-    getUser
+    getUser,
+    getUserProjects
 }

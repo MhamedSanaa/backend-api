@@ -10,5 +10,7 @@ router.route('/')
 
 router.route('/:id')
     .get(UsersController.getUser);
+router.route('/:id/projects')
+    .get(UsersController.getUserProjects)
 
 module.exports = router;

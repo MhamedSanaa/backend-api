@@ -14,6 +14,9 @@ const handleLogin = async (req, res) => {
         const supervisor = foundUser.supervisor;
         const admin = foundUser.admin;
         const userId = foundUser._id;
+        const hasProjects = foundUser.projects.length === 0 ? false : true;
+        console.log("projects ",foundUser.projects);
+        console.log("has ",hasProjects);
         // create JWTs
         const accessToken = jwt.sign(
             {
@@ -44,7 +47,7 @@ const handleLogin = async (req, res) => {
             sameSite: 'None', maxAge: 24 * 60 * 60 * 1000
         });//when times up unauthorized
         // Send authorization roles and access token to user
-        res.json({ userId, admin, supervisor, accessToken });
+        res.json({ userId, admin, supervisor, hasProjects, accessToken });
 
     } else {
         res.sendStatus(401);

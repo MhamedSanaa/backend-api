@@ -7,6 +7,11 @@ const getAllProjects = async (req, res) => {
     if (!projects) return res.status(204).json({ 'message': 'no platform projects found' });
     res.json(projects);
 }
+const getProjectByOwner = async (req, res) => {
+    const projects = await Project.find({owner:req});
+    if (!projects) return res.status(204).json({ 'message': 'no platform projects found' });
+    res.json(projects);
+}
 
 const deleteProject = async (req, res) => {
     if (!req?.body?.id) return res.status(400).json({ "message": 'Project ID required' });
