@@ -1,7 +1,7 @@
 const User = require('../model/User')
 
 const getAllUsers = async (req, res) => {
-    const users = await User.find({});
+    const users = await User.find({})/* .populate("projects","title") */;
     if (!users) return res.status(204).json({ 'message': 'no platform users found' });
     res.json(users);
 }

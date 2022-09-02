@@ -8,7 +8,7 @@ const getAllProjects = async (req, res) => {
     res.json(projects);
 }
 const getProjectByOwner = async (req, res) => {
-    const projects = await Project.find({owner:req});
+    const projects = await Project.find({ owner: req });
     if (!projects) return res.status(204).json({ 'message': 'no platform projects found' });
     res.json(projects);
 }
@@ -33,22 +33,22 @@ const getProject = async (req, res) => {
 }
 
 
-const addUserToProject = async(projectId,userId,userRole) =>{
-    
-   
+const addUserToProject = async (projectId, userId, userRole) => {
+
+
     return Project.findByIdAndUpdate(
         projectId,
         // {$push : {collabs : userId}},
-        
+
         // {$push : {collabs : userId,role:'userRole'}},
-        {$push : {collabs : {user : userId,role : userRole}}},
-        {new : true, useFindAndModify: false}
+        { $push: { collabs: { user: userId, role: userRole } } },
+        { new: true, useFindAndModify: false }
     )
 
 }
-const addProjectToUser = async(projectId,userId,userRole) =>{
-    
-   
+const addProjectToUser = async (projectId, userId) => {
+
+
     return User.findByIdAndUpdate(
         userId,
         // {$push : {projects :  projectId}},
@@ -58,35 +58,35 @@ const addProjectToUser = async(projectId,userId,userRole) =>{
 
 }
 
-const handleNewProject = async (req, res)=>{
+const handleNewProject = async (req, res) => {
 
-    const data=req.body;
+    const data = req.body;
     console.log('hereeeeee');
-    console.log('data',data);
- 
+    console.log('data', data);
 
-    try{
 
-     const project = await Project.create({
-        owner:data.owner,
-        title:data.title,
-        type:data.type,
-        files:data.files,
-        // collabs:data.collabs,
-     })
+    try {
 
-     data.collabs.map((user)=> { 
-        addUserToProject(project.id,user.id,user.role);
-        addProjectToUser(project.id,user.id,user.role);
-    
-    });
-    // addUserToProject(project.id,data.owner);
-    // addProjectToUser(project.id,data.owner);
+        const project = await Project.create({
+            owner: data.owner,
+            title: data.title,
+            type: data.type,
+            files: data.files,
+            // collabs:data.collabs,
+        })
 
-        
-     return project
+        data.collabs.map((user) => {
+            addUserToProject(project.id, user.id, user.role);
+            addProjectToUser(project.id, user.id,user.role);
+
+        });
+        // addUserToProject(project.id, data.owner);
+        // addProjectToUser(project.id, data.owner);
+
+        res.json(project);
+        return project
     }
-    catch(err){
+    catch (err) {
         console.log(err);
         return undefined;
     }
