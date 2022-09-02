@@ -13,7 +13,8 @@ const userSchema = new Schema({
     },
     supervisor: {
         type: Boolean,
-        default: false
+        default: false,
+        required:true
     },
     password: {
         type: String,
@@ -21,15 +22,18 @@ const userSchema = new Schema({
     },
     firstName: {
         type: String,
-        // required: true
+        required: true
     },
     lastName: {
         type: String,
-        // required: true
+        required: true
     },
     projects: [{
+        projet : {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Project"        
+        ref: "Project" },
+        role : String,
+
     }],
     refreshToken: String
 });

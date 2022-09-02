@@ -2,7 +2,7 @@ const User = require('../model/User');
 const bcrypt = require('bcrypt');
 
 const handleNewUser = async (req, res) => {
-    const { user, pwd,firstName,lastName } = req.body;
+    const { user, pwd,firstName,lastName,admin,supervisor } = req.body;
     if (!user || !pwd) return res.status(400).json({ 'message': 'Username and password are required.' });
     
 
@@ -19,7 +19,9 @@ const handleNewUser = async (req, res) => {
             "username": user,
             "password": hashedPwd,
             "firstName":firstName,
-            "lastName":lastName
+            "lastName":lastName,
+            "admin":admin,
+            "supervisor":supervisor
         });
 
         console.log(result);

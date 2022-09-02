@@ -46,12 +46,13 @@ const addUserToProject = async(projectId,userId,userRole) =>{
     )
 
 }
-const addProjectToUser = async(projectId,userId) =>{
+const addProjectToUser = async(projectId,userId,userRole) =>{
     
    
     return User.findByIdAndUpdate(
         userId,
-        {$push : {projects :  projectId}},
+        // {$push : {projects :  projectId}},
+        {$push : {projects :  {project : projectId,role : userRole}}},
         {new : true, useFindAndModify: false}
     )
 
@@ -76,11 +77,11 @@ const handleNewProject = async (req, res)=>{
 
      data.collabs.map((user)=> { 
         addUserToProject(project.id,user.id,user.role);
-        addProjectToUser(project.id,user.id);
+        addProjectToUser(project.id,user.id,user.role);
     
     });
-    addUserToProject(project.id,data.owner);
-    addProjectToUser(project.id,data.owner);
+    // addUserToProject(project.id,data.owner);
+    // addProjectToUser(project.id,data.owner);
 
         
      return project
