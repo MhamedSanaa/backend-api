@@ -18,12 +18,12 @@ const projectSchema = new Schema({
         name : String,
         path : String,
         contentType : String,
+        annotation: String,
         annotatedBy : {type: Schema.Types.ObjectId, ref: 'User'},
-        completed :{
-            type : String,
-            default : '-'
-        }
-        // valida
+        annotatedOn : Date,
+        validation:Boolean,
+        validatedBy: {type: Schema.Types.ObjectId, ref: 'User'},
+        validatedOn:Date,   
     }],
     collabs:[{
         user : {type: Schema.Types.ObjectId, ref: 'User'},
