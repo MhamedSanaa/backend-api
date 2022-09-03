@@ -11,7 +11,7 @@ const getUserProjects = async (req, res) => {
     const userPopulated = await User.findById(req?.params?.id).populate("projects");
     if (!userPopulated) return res.status(204).json({ 'message': 'no platform projects found' });
     res.json(userPopulated.projects);
-    console.log(userPopulated.projects);
+    console.log("projects",userPopulated.projects);
 }
 
 const deleteUser = async (req, res) => {
