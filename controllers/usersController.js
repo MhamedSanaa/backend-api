@@ -8,7 +8,7 @@ const getAllUsers = async (req, res) => {
 
 const getUserProjects = async (req, res) => {
     
-    const userPopulated = await User.findById(req?.params?.id).populate("projects");
+    const userPopulated = await User.findById(req?.params?.id).populate("projects.project");
     console.log('userPopulated',userPopulated);
     if (!userPopulated) return res.status(204).json({ 'message': 'no platform projects found' });
     res.json(userPopulated.projects);
