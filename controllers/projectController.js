@@ -26,29 +26,46 @@ const deleteProject = async (req, res) => {
 
 const addingAnnotation = async (req, res) => {
     console.log("annotation", req.body);
-    var query = {
-        "_id": req.body.projectId,
-        "files": {
-          "$elemMatch": {
-            "_id": req.body.fileId
-          }
-        }
-      };
-      var updateBlock = {
-        "$set": {
-          "files.annotation": req.body.annotation
-        }
-      };
-      
-      const project = Project.updateOne(query, updateBlock, function(err, numAffected) {
-        // work with callback
-      })
-      console.log("testttttttttttt",project);
+    const data = req.body
+    return Project.findByIdAndUpdate(
+        data.projectId,
+        // {$push : {collabs : userId}},
+
+        // {$push : {collabs : userId,role:'userRole'}},
+        {
+            $push: {
+                files: { 
+                    // files element
+                 }
+            }
+        },
+
+        { new: true, useFindAndModify: false }
+    )
+
+    // var query = {
+    //     "_id": req.body.projectId,
+    //     "files": {
+    //       "$elemMatch": {
+    //         "_id": req.body.fileId
+    //       }
+    //     }
+    //   };
+    //   var updateBlock = {
+    //     "$set": {
+    //       "files.annotation": req.body.annotation
+    //     }
+    //   };
+
+    //   const project = Project.updateOne(query, updateBlock, function(err, numAffected) {
+    //     // work with callback
+    //   })
+    //   console.log("testttttttttttt",project);
 
 
-    const projects = await Project.findByIdAndUpdate(req.body.id,);
-    if (!projects) return res.status(204).json({ 'message': 'no platform projects found' });
-    res.json(projects);
+    // const projects = await Project.findByIdAndUpdate(req.body.id,);
+    // if (!projects) return res.status(204).json({ 'message': 'no platform projects found' });
+    // res.json(projects);
 }
 
 const getProject = async (req, res) => {
@@ -74,14 +91,14 @@ const addUserToProject = async (projectId, userId, userRole) => {
     )
 
 }
-const addProjectToUser = async (projectId, userId,userRole) => {
+const addProjectToUser = async (projectId, userId, userRole) => {
 
 
     return User.findByIdAndUpdate(
         userId,
         // {$push : {projects :  projectId}},
-        {$push : {projects :  {project : projectId,role : userRole}}},
-        {new : true, useFindAndModify: false}
+        { $push: { projects: { project: projectId, role: userRole } } },
+        { new: true, useFindAndModify: false }
     )
 
 }
@@ -105,11 +122,11 @@ const handleNewProject = async (req, res) => {
 
         data.collabs.map((user) => {
             addUserToProject(project.id, user.id, user.role);
-            addProjectToUser(project.id, user.id,user.role);
+            addProjectToUser(project.id, user.id, user.role);
 
         });
-        addUserToProject(project.id, data.owner,"supervisor");
-        addProjectToUser(project.id, data.owner,"supervisor");
+        addUserToProject(project.id, data.owner, "supervisor");
+        addProjectToUser(project.id, data.owner, "supervisor");
 
         res.json(project);
         return project
