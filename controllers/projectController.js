@@ -46,7 +46,7 @@ const addUserToProject = async (projectId, userId, userRole) => {
     )
 
 }
-const addProjectToUser = async (projectId, userId) => {
+const addProjectToUser = async (projectId, userId,userRole) => {
 
 
     return User.findByIdAndUpdate(
