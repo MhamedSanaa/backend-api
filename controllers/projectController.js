@@ -80,8 +80,8 @@ const handleNewProject = async (req, res) => {
             addProjectToUser(project.id, user.id,user.role);
 
         });
-        // addUserToProject(project.id, data.owner);
-        // addProjectToUser(project.id, data.owner);
+        addUserToProject(project.id, data.owner,"supervisor");
+        addProjectToUser(project.id, data.owner,"supervisor");
 
         res.json(project);
         return project
