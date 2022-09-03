@@ -23,6 +23,34 @@ const deleteProject = async (req, res) => {
     res.json(result);
 }
 
+
+const addingAnnotation = async (req, res) => {
+    console.log("annotation", req.body);
+    var query = {
+        "_id": req.body.projectId,
+        "files": {
+          "$elemMatch": {
+            "_id": req.body.fileId
+          }
+        }
+      };
+      var updateBlock = {
+        "$set": {
+          "files.annotation": req.body.annotation
+        }
+      };
+      
+      const project = Project.updateOne(query, updateBlock, function(err, numAffected) {
+        // work with callback
+      })
+      console.log("testttttttttttt",project);
+
+
+    const projects = await Project.findByIdAndUpdate(req.body.id,);
+    if (!projects) return res.status(204).json({ 'message': 'no platform projects found' });
+    res.json(projects);
+}
+
 const getProject = async (req, res) => {
     if (!req?.params?.id) return res.status(400).json({ "message": 'Project ID required' });
     const project = await Project.findOne({ _id: req.params.id }).exec();
@@ -96,6 +124,7 @@ module.exports = {
     handleNewProject,
     getAllProjects,
     deleteProject,
-    getProject
+    getProject,
+    addingAnnotation
 }
 

@@ -8,6 +8,7 @@ router.route('/')
     .get(ProjectController.getAllProjects)
     .delete(ProjectController.deleteProject)
     .post(ProjectController.handleNewProject)
+    .put(ProjectController.addingAnnotation)
 
 router.route('/:id')
     .get(ProjectController.getProject);
