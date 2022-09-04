@@ -12,7 +12,7 @@ router.route('/')
 
 router.route('/:id')
     .get(ProjectController.getProject);
-// router.route('/:userId/:projectId')
-//     .get(ProjectController.getProjectWithRole);
+router.route('/:userId/:userRole')
+    .get(ProjectController.getProjectWithRole);
 
 module.exports = router;

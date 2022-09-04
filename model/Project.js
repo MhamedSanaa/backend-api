@@ -26,7 +26,7 @@ const projectSchema = new Schema({
         annotation: String,
         annotatedBy: String,
         annotatedOn: String,
-        validation: Boolean,
+        validation: String,
         validatedBy: String,
         validatedOn: String,
     }],

@@ -30,6 +30,8 @@ const addingAnnotation = async (req, res) => {
   
     console.log( (new Date()).toLocaleDateString());
 //    Project.update
+try{
+if(data.annotation){
 
     var query = {
         "_id":data.projectId,
@@ -40,11 +42,35 @@ const addingAnnotation = async (req, res) => {
       var updateBlock = {
         "$set": {
           "files.$.annotation": data.annotation,
-          "files.$.annotatedBy": data.annotator,
-          "files.$.annotatedOn": (new Date()).toLocaleDateString()
+          "files.$.annotatedBy": data.annotatedBy,
+          "files.$.annotatedOn": (new Date()).toLocaleDateString()+" at "+(new Date()).toLocaleTimeString()
         }
       };
       await Project.findOneAndUpdate(query,updateBlock,{new : true});
+      res.json({"state":"success"});
+}
+else{
+    var query = {
+        "_id":data.projectId,
+        "files._id":data.fileId,
+
+        // "files" : {"$elemMatch": {_id:mongoose.Types.ObjectId(data.fileId)}}
+      };
+      var updateBlock = {
+        "$set": {
+          "files.$.validation": data.validation,
+          "files.$.validatedBy": data.validatedBy,
+          "files.$.validatedOn": (new Date()).toLocaleDateString()+" at "+(new Date()).toLocaleTimeString()
+        }
+      };
+      await Project.findOneAndUpdate(query,updateBlock,{new : true});
+      res.json({"state":"success"});
+}
+}
+catch(err){
+    console.log(err)
+    res.json({"state":"error"});
+}
     
 }
 
@@ -55,6 +81,14 @@ const getProject = async (req, res) => {
         return res.status(204).json({ 'message': `Project ID ${req.params.id} not found` });
     }
     res.json(project);
+}
+const getProjectWithRole = async (req, res) => {
+    if (!req?.params?.id) return res.status(400).json({ "message": 'Project ID required' });
+    const project = await Project.findOne({ _id: req.params.id }).exec();
+    if (!project) {
+        return res.status(204).json({ 'message': `Project ID ${req.params.id} not found` });
+    }
+    res.json(project,req.params.userRole);
 }
 
 
@@ -122,6 +156,7 @@ module.exports = {
     getAllProjects,
     deleteProject,
     getProject,
-    addingAnnotation
+    addingAnnotation,
+    getProjectWithRole
 }
 
