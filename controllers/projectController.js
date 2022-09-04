@@ -2,6 +2,7 @@ const Project = require('../model/Project');
 const { listenerCount } = require('../model/User');
 const User = require('../model/User');
 
+
 const getAllProjects = async (req, res) => {
     const projects = await Project.find({});
     if (!projects) return res.status(204).json({ 'message': 'no platform projects found' });
@@ -25,47 +26,26 @@ const deleteProject = async (req, res) => {
 
 
 const addingAnnotation = async (req, res) => {
-    console.log("annotation", req.body);
     const data = req.body
-    return Project.findByIdAndUpdate(
-        data.projectId,
-        // {$push : {collabs : userId}},
+  
+    console.log( (new Date()).toLocaleDateString());
+//    Project.update
 
-        // {$push : {collabs : userId,role:'userRole'}},
-        {
-            $push: {
-                files: { 
-                    // files element
-                 }
-            }
-        },
+    var query = {
+        "_id":data.projectId,
+        "files._id":data.fileId,
 
-        { new: true, useFindAndModify: false }
-    )
-
-    // var query = {
-    //     "_id": req.body.projectId,
-    //     "files": {
-    //       "$elemMatch": {
-    //         "_id": req.body.fileId
-    //       }
-    //     }
-    //   };
-    //   var updateBlock = {
-    //     "$set": {
-    //       "files.annotation": req.body.annotation
-    //     }
-    //   };
-
-    //   const project = Project.updateOne(query, updateBlock, function(err, numAffected) {
-    //     // work with callback
-    //   })
-    //   console.log("testttttttttttt",project);
-
-
-    // const projects = await Project.findByIdAndUpdate(req.body.id,);
-    // if (!projects) return res.status(204).json({ 'message': 'no platform projects found' });
-    // res.json(projects);
+        // "files" : {"$elemMatch": {_id:mongoose.Types.ObjectId(data.fileId)}}
+      };
+      var updateBlock = {
+        "$set": {
+          "files.$.annotation": data.annotation,
+          "files.$.annotatedBy": data.annotator,
+          "files.$.annotatedOn": (new Date()).toLocaleDateString()
+        }
+      };
+      await Project.findOneAndUpdate(query,updateBlock,{new : true});
+    
 }
 
 const getProject = async (req, res) => {

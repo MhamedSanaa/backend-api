@@ -14,16 +14,21 @@ const projectSchema = new Schema({
         type: String,
         required: true,
     },
+    createdOn:{
+        type:Date,
+        default : new Date()
+    }
+    ,
     files: [{
         name: String,
         path: String,
         contentType: String,
         annotation: String,
         annotatedBy: String,
-        annotatedOn: Date,
+        annotatedOn: String,
         validation: Boolean,
         validatedBy: String,
-        validatedOn: Date,
+        validatedOn: String,
     }],
     collabs: [{
         user: { type: Schema.Types.ObjectId, ref: 'User' },
