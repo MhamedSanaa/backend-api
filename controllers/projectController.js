@@ -8,10 +8,12 @@ const getAllProjects = async (req, res) => {
     if (!projects) return res.status(204).json({ 'message': 'no platform projects found' });
     res.json(projects);
 }
-const getProjectByOwner = async (req, res) => {
-    const projects = await Project.find({ owner: req });
-    if (!projects) return res.status(204).json({ 'message': 'no platform projects found' });
-    res.json(projects);
+const getProjectUsers = async (req, res) => {
+    console.log('tesssssssssss',req.query.projecID);
+    const response = await Project.findById(req?.query?.projecID).populate("collabs.user");
+    console.log(response);
+    if (!response) return res.status(204).json({ 'message': 'no platform projects found' });
+    res.json(response);
 }
 
 const deleteProject = async (req, res) => {
@@ -142,7 +144,7 @@ const handleNewProject = async (req, res) => {
         addUserToProject(project.id, data.owner, "supervisor");
         addProjectToUser(project.id, data.owner, "supervisor");
 
-        res.json(project);
+        res.json(project._id);
         return project
     }
     catch (err) {
@@ -153,6 +155,7 @@ const handleNewProject = async (req, res) => {
 
 module.exports = {
     handleNewProject,
+    getProjectUsers,
     getAllProjects,
     deleteProject,
     getProject,
