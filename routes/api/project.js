@@ -9,7 +9,8 @@ router.route('/')
     .delete(ProjectController.deleteProject)
     .post(ProjectController.handleNewProject)
     .put(ProjectController.addingAnnotation)
-
+router.route('/users')
+    .get(ProjectController.getProjectUsers)
 router.route('/:id')
     .get(ProjectController.getProject);
 router.route('/:userId/:userRole')
