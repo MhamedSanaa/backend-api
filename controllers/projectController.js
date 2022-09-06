@@ -28,7 +28,7 @@ const deleteProject = async (req, res) => {
 const addingAnnotation = async (req, res) => {
     const data = req.body
   
-    console.log( (new Date()).toLocaleDateString());
+    // console.log( (new Date()).toLocaleDateString());
 //    Project.update
 try{
 if(data.annotation){
@@ -47,6 +47,7 @@ if(data.annotation){
         }
       };
       await Project.findOneAndUpdate(query,updateBlock,{new : true});
+      await Project.findOneAndUpdate({"_id":data.projectId,},{$inc:{na:1}},{new : true});
       res.json({"state":"success"});
 }
 else{
@@ -64,6 +65,7 @@ else{
         }
       };
       await Project.findOneAndUpdate(query,updateBlock,{new : true});
+      await Project.findOneAndUpdate({"_id":data.projectId,},{$inc:{nv:1}},{new : true});
       res.json({"state":"success"});
 }
 }
@@ -119,9 +121,18 @@ const addProjectToUser = async (projectId, userId, userRole) => {
 
 const handleNewProject = async (req, res) => {
 
-    const data = req.body;
-    console.log('hereeeeee');
-    console.log('data', data);
+    let data = req.body;
+    // console.log(data.contentType)
+    // console.log('hereeeeee');
+    // console.log('data', data);
+    data.files.forEach( line => {
+        const ext=line.name.split('.').pop()
+        console.log('ext',ext)
+        if(ext==="docx"){
+            line.contentType='docx'
+        }
+        
+    });
 
 
     try {

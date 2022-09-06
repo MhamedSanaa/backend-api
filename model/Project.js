@@ -14,11 +14,18 @@ const projectSchema = new Schema({
         type: String,
         required: true,
     },
-    createdOn:{
-        type:Date,
-        default : new Date()
-    }
-    ,
+    createdOn: {
+        type: Date,
+        default: new Date()
+    },
+    na: {
+        type: Number,
+        default: 0
+    },
+    nv: {
+        type: Number,
+        default: 0
+    },
     files: [{
         name: String,
         path: String,
