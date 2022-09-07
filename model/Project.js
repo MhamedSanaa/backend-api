@@ -36,6 +36,8 @@ const projectSchema = new Schema({
         validation: String,
         validatedBy: String,
         validatedOn: String,
+        annotationVocal:String,
+        validationVocal:String
     }],
     collabs: [{
         user: { type: Schema.Types.ObjectId, ref: 'User' },
