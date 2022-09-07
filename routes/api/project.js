@@ -11,6 +11,8 @@ router.route('/')
     .put(ProjectController.addingAnnotation)
 router.route('/users')
     .get(ProjectController.getProjectUsers)
+router.route('/export')
+    .get(ProjectController.getProjectFiles)
 router.route('/:id')
     .get(ProjectController.getProject);
 router.route('/:userId/:userRole')

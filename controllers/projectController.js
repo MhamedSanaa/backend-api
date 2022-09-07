@@ -94,6 +94,12 @@ const getProjectWithRole = async (req, res) => {
     }
     res.json(project,req.params.userRole);
 }
+const getProjectFiles = async (req, res) => {
+    const projects = await Project.findById(req.query.projecID).select('files');
+    const files = projects.files.filter((file)=>file.validation);
+    if (!projects) return res.status(204).json({ 'message': 'no platform projects found' });
+    res.json(files);
+}
 
 
 const addUserToProject = async (projectId, userId, userRole) => {
@@ -165,6 +171,7 @@ const handleNewProject = async (req, res) => {
 }
 
 module.exports = {
+    getProjectFiles,
     handleNewProject,
     getProjectUsers,
     getAllProjects,
