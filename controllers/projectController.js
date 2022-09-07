@@ -96,7 +96,7 @@ const getProjectWithRole = async (req, res) => {
 }
 const getProjectFiles = async (req, res) => {
     const projects = await Project.findById(req.query.projecID).select('files');
-    const files = projects.files.filter((file)=>file.validation);
+    const files = projects.files.filter((file)=>file.validatedOn);
     if (!projects) return res.status(204).json({ 'message': 'no platform projects found' });
     res.json(files);
 }
