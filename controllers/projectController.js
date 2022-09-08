@@ -9,7 +9,7 @@ const getAllProjects = async (req, res) => {
     res.json(projects);
 }
 const getProjectUsers = async (req, res) => {
-    console.log('tesssssssssss',req.query.projecID);
+    console.log('tesssssssssss', req.query.projecID);
     const response = await Project.findById(req?.query?.projecID).populate("collabs.user");
     console.log(response);
     if (!response) return res.status(204).json({ 'message': 'no platform projects found' });
@@ -27,55 +27,107 @@ const deleteProject = async (req, res) => {
 }
 
 
-const addingAnnotation = async (req, res) => {
+const addingAnnotationStt = async (req, res) => {
     const data = req.body
-  
+
     // console.log( (new Date()).toLocaleDateString());
-//    Project.update
-try{
-if(data.annotation){
+    //    Project.update
+    try {
+        if (data.annotation) {
 
-    var query = {
-        "_id":data.projectId,
-        "files._id":data.fileId,
+            var query = {
+                "_id": data.projectId,
+                "files._id": data.fileId,
 
-        // "files" : {"$elemMatch": {_id:mongoose.Types.ObjectId(data.fileId)}}
-      };
-      var updateBlock = {
-        "$set": {
-          "files.$.annotation": data.annotation,
-          "files.$.annotatedBy": data.annotatedBy,
-          "files.$.annotatedOn": (new Date()).toLocaleDateString()+" at "+(new Date()).toLocaleTimeString()
+                // "files" : {"$elemMatch": {_id:mongoose.Types.ObjectId(data.fileId)}}
+            };
+            var updateBlock = {
+                "$set": {
+                    "files.$.annotation": data.annotation,
+                    "files.$.annotatedBy": data.annotatedBy,
+                    "files.$.annotatedOn": (new Date()).toLocaleDateString() + " at " + (new Date()).toLocaleTimeString()
+                }
+            };
+            await Project.findOneAndUpdate(query, updateBlock, { new: true });
+            await Project.findOneAndUpdate({ "_id": data.projectId, }, { $inc: { na: 1 } }, { new: true });
+            res.json({ "state": "success" });
         }
-      };
-      await Project.findOneAndUpdate(query,updateBlock,{new : true});
-      await Project.findOneAndUpdate({"_id":data.projectId,},{$inc:{na:1}},{new : true});
-      res.json({"state":"success"});
-}
-else{
-    var query = {
-        "_id":data.projectId,
-        "files._id":data.fileId,
+        else {
+            var query = {
+                "_id": data.projectId,
+                "files._id": data.fileId,
 
-        // "files" : {"$elemMatch": {_id:mongoose.Types.ObjectId(data.fileId)}}
-      };
-      var updateBlock = {
-        "$set": {
-          "files.$.validation": data.validation,
-          "files.$.validatedBy": data.validatedBy,
-          "files.$.validatedOn": (new Date()).toLocaleDateString()+" at "+(new Date()).toLocaleTimeString()
+                // "files" : {"$elemMatch": {_id:mongoose.Types.ObjectId(data.fileId)}}
+            };
+            var updateBlock = {
+                "$set": {
+                    "files.$.validation": data.validation,
+                    "files.$.validatedBy": data.validatedBy,
+                    "files.$.validatedOn": (new Date()).toLocaleDateString() + " at " + (new Date()).toLocaleTimeString()
+                }
+            };
+            await Project.findOneAndUpdate(query, updateBlock, { new: true });
+            await Project.findOneAndUpdate({ "_id": data.projectId, }, { $inc: { nv: 1 } }, { new: true });
+            res.json({ "state": "success" });
         }
-      };
-      await Project.findOneAndUpdate(query,updateBlock,{new : true});
-      await Project.findOneAndUpdate({"_id":data.projectId,},{$inc:{nv:1}},{new : true});
-      res.json({"state":"success"});
+    }
+    catch (err) {
+        console.log(err)
+        res.json({ "state": "error" });
+    }
+
 }
-}
-catch(err){
-    console.log(err)
-    res.json({"state":"error"});
-}
-    
+
+const addingAnnotationTts = async (req, res) => {
+    const data = req.body
+    console.log("data",data);
+    // console.log( (new Date()).toLocaleDateString());
+    //    Project.update
+    console.log("datadata.annotation",data.annotationVocal);
+    try {
+        if (data.annotationVocal) {
+
+            var query = {
+                "_id": data.projectId,
+                "files._id": data.fileId,
+
+                // "files" : {"$elemMatch": {_id:mongoose.Types.ObjectId(data.fileId)}}
+            };
+            var updateBlock = {
+                "$set": {
+                    "files.$.annotationVocal": data.annotationVocal,
+                    "files.$.annotatedBy": data.annotatedBy,
+                    "files.$.annotatedOn": (new Date()).toLocaleDateString() + " at " + (new Date()).toLocaleTimeString()
+                }
+            };
+            await Project.findOneAndUpdate(query, updateBlock, { new: true });
+            await Project.findOneAndUpdate({ "_id": data.projectId, }, { $inc: { na: 1 } }, { new: true });
+            res.json({ "state": "success" });
+        }
+        else {
+            var query = {
+                "_id": data.projectId,
+                "files._id": data.fileId,
+
+                // "files" : {"$elemMatch": {_id:mongoose.Types.ObjectId(data.fileId)}}
+            };
+            var updateBlock = {
+                "$set": {
+                    "files.$.validationVocal": data.validationVocal,
+                    "files.$.validatedBy": data.validatedBy,
+                    "files.$.validatedOn": (new Date()).toLocaleDateString() + " at " + (new Date()).toLocaleTimeString()
+                }
+            };
+            await Project.findOneAndUpdate(query, updateBlock, { new: true });
+            await Project.findOneAndUpdate({ "_id": data.projectId, }, { $inc: { nv: 1 } }, { new: true });
+            res.json({ "state": "success" });
+        }
+    }
+    catch (err) {
+        console.log(err)
+        res.json({ "state": "error" });
+    }
+
 }
 
 const getProject = async (req, res) => {
@@ -92,11 +144,11 @@ const getProjectWithRole = async (req, res) => {
     if (!project) {
         return res.status(204).json({ 'message': `Project ID ${req.params.id} not found` });
     }
-    res.json(project,req.params.userRole);
+    res.json(project, req.params.userRole);
 }
 const getProjectFiles = async (req, res) => {
     const projects = await Project.findById(req.query.projecID).select('files');
-    const files = projects.files.filter((file)=>file.validatedOn);
+    const files = projects.files.filter((file) => file.validatedOn);
     if (!projects) return res.status(204).json({ 'message': 'no platform projects found' });
     res.json(files);
 }
@@ -133,13 +185,13 @@ const handleNewProject = async (req, res) => {
     // console.log(data.contentType)
     // console.log('hereeeeee');
     // console.log('data', data);
-    data.files.forEach( line => {
-        const ext=line.name.split('.').pop()
-        console.log('ext',ext)
-        if(ext==="docx"){
-            line.contentType='docx'
+    data.files.forEach(line => {
+        const ext = line.name.split('.').pop()
+        console.log('ext', ext)
+        if (ext === "docx") {
+            line.contentType = 'docx'
         }
-        
+
     });
 
 
@@ -177,7 +229,8 @@ module.exports = {
     getAllProjects,
     deleteProject,
     getProject,
-    addingAnnotation,
+    addingAnnotationStt,
+    addingAnnotationTts,
     getProjectWithRole
 }
 

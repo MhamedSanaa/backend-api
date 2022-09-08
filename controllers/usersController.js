@@ -7,7 +7,8 @@ const getAllUsers = async (req, res) => {
 }
 
 const getUserProjects = async (req, res) => {
-    
+    console.log("testsdfsdfsdfsdf ",req?.params?.id);
+    if (req?.params?.id === "undefined") {console.log("very wierd"); return res.status(400).json({ "message": 'User ID required' });}
     const userPopulated = await User.findById(req?.params?.id).populate("projects.project");
     console.log('userPopulated',userPopulated);
     if (!userPopulated) return res.status(204).json({ 'message': 'no platform projects found' });
