@@ -26,6 +26,7 @@ const projectSchema = new Schema({
         type: Number,
         default: 0
     },
+    nf: Number,
     files: [{
         name: String,
         path: String,

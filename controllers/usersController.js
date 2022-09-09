@@ -9,11 +9,11 @@ const getAllUsers = async (req, res) => {
 const getUserProjects = async (req, res) => {
     console.log("testsdfsdfsdfsdf ",req?.params?.id);
     if (req?.params?.id === "undefined") {console.log("very wierd"); return res.status(400).json({ "message": 'User ID required' });}
-    const userPopulated = await User.findById(req?.params?.id).populate("projects.project");
+    const userPopulated = await User.findById(req?.params?.id).lean().populate("projects.project","-files");
     console.log('userPopulated',userPopulated);
     if (!userPopulated) return res.status(204).json({ 'message': 'no platform projects found' });
     res.json(userPopulated.projects);
-    console.log("projects",userPopulated.projects);
+    // console.log("projects",userPopulated.projects);
 }
 
 const deleteUser = async (req, res) => {
