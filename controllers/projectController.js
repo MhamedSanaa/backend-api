@@ -194,6 +194,15 @@ const addFilesToProject = async (req, res) => {
     }
 }
 
+const addCollabsToProject = async (req, res) => {
+    let data = req.body;
+    data.collabs.map((user) => {
+        addUserToProject(data.projectId, user.id, user.role);
+        addProjectToUser(data.projectId, user.id, user.role);
+
+    });
+
+}
 
 
 const addProjectToUser = async (projectId, userId, userRole) => {
@@ -262,6 +271,7 @@ module.exports = {
     addingAnnotationStt,
     addingAnnotationTts,
     getProjectWithRole,
-    addFilesToProject
+    addFilesToProject,
+    addCollabsToProject
 }
 

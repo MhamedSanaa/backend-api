@@ -11,6 +11,9 @@ router.route('/')
 
 router.route('/addfiles')
     .put(ProjectController.addFilesToProject)
+    
+router.route('/addcollabs')
+    .put(ProjectController.addCollabsToProject)
 
 router.route('/annotate/tts')
     .put(ProjectController.addingAnnotationTts)
