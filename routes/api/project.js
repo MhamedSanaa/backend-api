@@ -9,6 +9,9 @@ router.route('/')
     .delete(ProjectController.deleteProject)
     .post(ProjectController.handleNewProject)
 
+router.route('/addfiles')
+    .put(ProjectController.addFilesToProject)
+
 router.route('/annotate/tts')
     .put(ProjectController.addingAnnotationTts)
 router.route('/annotate/stt')

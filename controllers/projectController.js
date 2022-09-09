@@ -10,7 +10,7 @@ const getAllProjects = async (req, res) => {
 }
 const getProjectUsers = async (req, res) => {
     console.log('tesssssssssss', req.query.projecID);
-    const response = await Project.findById(req?.query?.projecID,"collabs").populate("collabs.user","firstName lastName");
+    const response = await Project.findById(req?.query?.projecID, "collabs").populate("collabs.user", "firstName lastName");
     console.log(response);
     if (!response) return res.status(204).json({ 'message': 'no platform projects found' });
     res.json(response);
@@ -19,7 +19,7 @@ const getProjectUsers = async (req, res) => {
 const deleteProject = async (req, res) => {
     if (!req.query.projectID) return res.status(400).json({ "message": 'Project ID required' });
     const project = await Project.findOne({ _id: req.query.projectID }).exec();
-    console.log("teeeeeeeeeeeeeeees",project);
+    console.log("teeeeeeeeeeeeeeees", project);
     if (!project) {
         return res.status(204).json({ 'message': `Project ID ${req.query.projectID} not found` });
     }
@@ -81,10 +81,10 @@ const addingAnnotationStt = async (req, res) => {
 
 const addingAnnotationTts = async (req, res) => {
     const data = req.body
-    console.log("data",data);
+    console.log("data", data);
     // console.log( (new Date()).toLocaleDateString());
     //    Project.update
-    console.log("datadata.annotation",data.annotationVocal);
+    console.log("datadata.annotation", data.annotationVocal);
     try {
         if (data.annotationVocal) {
 
@@ -160,14 +160,42 @@ const addUserToProject = async (projectId, userId, userRole) => {
 
     return Project.findByIdAndUpdate(
         projectId,
-        // {$push : {collabs : userId}},
-
-        // {$push : {collabs : userId,role:'userRole'}},
         { $push: { collabs: { user: userId, role: userRole } } },
         { new: true, useFindAndModify: false }
     )
 
 }
+
+
+const addFile = async (projectId, file) => {
+
+
+    return Project.findByIdAndUpdate(
+        projectId,
+        {
+            $push: { files: file  },
+             $inc: { nf: 1 }
+        },
+        { new: true, useFindAndModify: false }
+    )
+
+}
+
+const addFilesToProject = async (req, res) => {
+    try {
+        const data = req.body;
+        data.files.forEach((file) => {
+            addFile(data.projectId,file);
+        })
+        res.status(201).json({ 'success': "files successfully added" });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ 'message': err.message });
+    }
+}
+
+
+
 const addProjectToUser = async (projectId, userId, userRole) => {
 
 
@@ -203,7 +231,7 @@ const handleNewProject = async (req, res) => {
             title: data.title,
             type: data.type,
             files: data.files,
-            nf:data.files.length
+            nf: data.files.length
             // collabs:data.collabs,
         })
 
@@ -233,6 +261,7 @@ module.exports = {
     getProject,
     addingAnnotationStt,
     addingAnnotationTts,
-    getProjectWithRole
+    getProjectWithRole,
+    addFilesToProject
 }
 
