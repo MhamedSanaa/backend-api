@@ -36,8 +36,8 @@ const projectSchema = new Schema({
         validation: String,
         validatedBy: String,
         validatedOn: String,
-        annotationVocal:String,
-        validationVocal:String
+        annotationVocal: String,
+        validationVocal: String
     }],
     collabs: [{
         user: { type: Schema.Types.ObjectId, ref: 'User' },
@@ -46,4 +46,20 @@ const projectSchema = new Schema({
 
 
 })
+
+projectSchema.pre('deleteOne', function (next) {
+    const projecID = this.getQuery()["_id"];
+    mongoose.model("User").updateMany(
+        { 'projects.project': projecID },
+        { $pull: { projects: { project: { _id: projecID } } } },
+        function (err, result) {
+            if (err) {
+                console.log(`[error] ${err}`);
+                next(err);
+            } else {
+                console.log('success');
+                next();
+            }
+        });
+});
 module.exports = mongoose.model('Project', projectSchema)

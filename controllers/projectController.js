@@ -17,12 +17,13 @@ const getProjectUsers = async (req, res) => {
 }
 
 const deleteProject = async (req, res) => {
-    if (!req?.body?.id) return res.status(400).json({ "message": 'Project ID required' });
-    const project = await Project.findOne({ _id: req.body.id }).exec();
+    if (!req.query.projectID) return res.status(400).json({ "message": 'Project ID required' });
+    const project = await Project.findOne({ _id: req.query.projectID }).exec();
+    console.log("teeeeeeeeeeeeeeees",project);
     if (!project) {
-        return res.status(204).json({ 'message': `Project ID ${req.body.id} not found` });
+        return res.status(204).json({ 'message': `Project ID ${req.query.projectID} not found` });
     }
-    const result = await Project.deleteOne({ _id: req.body.id });
+    const result = await Project.deleteOne({ _id: req.query.projectID });
     res.json(result);
 }
 
