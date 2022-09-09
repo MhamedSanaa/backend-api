@@ -10,7 +10,7 @@ const getAllProjects = async (req, res) => {
 }
 const getProjectUsers = async (req, res) => {
     console.log('tesssssssssss', req.query.projecID);
-    const response = await Project.findById(req?.query?.projecID).populate("collabs.user");
+    const response = await Project.findById(req?.query?.projecID,"collabs").populate("collabs.user","firstName lastName");
     console.log(response);
     if (!response) return res.status(204).json({ 'message': 'no platform projects found' });
     res.json(response);
@@ -203,6 +203,7 @@ const handleNewProject = async (req, res) => {
             title: data.title,
             type: data.type,
             files: data.files,
+            nf:data.files.length
             // collabs:data.collabs,
         })
 
