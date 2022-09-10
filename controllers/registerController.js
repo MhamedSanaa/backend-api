@@ -24,7 +24,7 @@ const handleNewUser = async (req, res) => {
             "supervisor":supervisor
         });
 
-        console.log(result);
+        
 
         res.status(201).json({ 'success': `New user ${user} created!` });
     } catch (err) {

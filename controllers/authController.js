@@ -15,8 +15,6 @@ const handleLogin = async (req, res) => {
         const admin = foundUser.admin;
         const userId = foundUser._id;
         const hasProjects = foundUser.projects.length === 0 ? false : true;
-        console.log("projects ",foundUser.projects);
-        console.log("has ",hasProjects);
         // create JWTs
         const accessToken = jwt.sign(
             {
@@ -36,8 +34,6 @@ const handleLogin = async (req, res) => {
         // Saving refreshToken with current user
         foundUser.refreshToken = refreshToken;
         const result = await foundUser.save();
-        console.log(result);
-        console.log(admin);
         // Creates Secure Cookie with refresh token
         res.cookie('jwt', refreshToken, {
             httpOnly: true,

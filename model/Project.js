@@ -58,7 +58,7 @@ projectSchema.pre('deleteOne', function (next) {
                 console.log(`[error] ${err}`);
                 next(err);
             } else {
-                console.log('success');
+                // console.log('success');
                 next();
             }
         });

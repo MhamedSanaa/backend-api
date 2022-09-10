@@ -1,6 +1,4 @@
 const uploadFiles =  async (req, res) => {
-    // console.log(req);
-    console.log(req.files);
     if (req.files === undefined) return res.send("you must select a file.");
     const imgUrl = `http://localhost:8080/file/${req.files.filename}`;
     return res.send(imgUrl);

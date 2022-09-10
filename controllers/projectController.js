@@ -9,9 +9,7 @@ const getAllProjects = async (req, res) => {
     res.json(projects);
 }
 const getProjectUsers = async (req, res) => {
-    console.log('tesssssssssss', req.query.projecID);
     const response = await Project.findById(req?.query?.projecID, "collabs").populate("collabs.user", "firstName lastName");
-    console.log(response);
     if (!response) return res.status(204).json({ 'message': 'no platform projects found' });
     res.json(response);
 }
@@ -19,7 +17,6 @@ const getProjectUsers = async (req, res) => {
 const deleteProject = async (req, res) => {
     if (!req.query.projectID) return res.status(400).json({ "message": 'Project ID required' });
     const project = await Project.findOne({ _id: req.query.projectID }).exec();
-    console.log("teeeeeeeeeeeeeeees", project);
     if (!project) {
         return res.status(204).json({ 'message': `Project ID ${req.query.projectID} not found` });
     }
@@ -31,7 +28,6 @@ const deleteProject = async (req, res) => {
 const addingAnnotationStt = async (req, res) => {
     const data = req.body
 
-    // console.log( (new Date()).toLocaleDateString());
     //    Project.update
     try {
         if (data.annotation) {
@@ -81,10 +77,7 @@ const addingAnnotationStt = async (req, res) => {
 
 const addingAnnotationTts = async (req, res) => {
     const data = req.body
-    console.log("data", data);
-    // console.log( (new Date()).toLocaleDateString());
     //    Project.update
-    console.log("datadata.annotation", data.annotationVocal);
     try {
         if (data.annotationVocal) {
 
@@ -220,12 +213,8 @@ const addProjectToUser = async (projectId, userId, userRole) => {
 const handleNewProject = async (req, res) => {
 
     let data = req.body;
-    // console.log(data.contentType)
-    // console.log('hereeeeee');
-    // console.log('data', data);
     data.files.forEach(line => {
         const ext = line.name.split('.').pop()
-        console.log('ext', ext)
         if (ext === "docx") {
             line.contentType = 'docx'
         }
