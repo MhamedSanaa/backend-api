@@ -11,6 +11,7 @@ const cookieParser = require('cookie-parser');
 const credentials = require('./middleware/credentials');
 const mongoose = require('mongoose');
 const connectDB = require('./config/dbConnection');
+var bodyParser = require('body-parser');
 
 
 // const upload = require("./routes/upload");
@@ -43,12 +44,9 @@ app.use(credentials);
 app.use(cors(corsOptions));
 
 // built-in middleware to handle urlencoded form data
-app.use(express.json({limit: '25mb'}));
-app.use(express.urlencoded({limit: '25mb'}));
-app.use(express.urlencoded({ extended: false }));
 
-// built-in middleware for json 
-app.use(express.json());
+app.use(bodyParser.json({limit: '500mb'}));
+app.use(bodyParser.urlencoded({limit: '500mb', extended: true}));
 
 
 //serve static files
